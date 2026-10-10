@@ -1,0 +1,53 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# --- 1. CSV Data Create (Tere paas file nahi hai to ye ban jayegi) ---
+data = {
+    'Date': ['2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04', '2024-01-05', '2024-01-06'],
+    'Product': ['Laptop', 'Mouse', 'Keyboard', 'Laptop', 'Mouse', 'Monitor'],
+    'Category': ['Electronics', 'Accessories', 'Accessories', 'Electronics'],
+    'Sales': [55000, 600, 2500, 60000, 700, 15000],
+    'Quantity': [1, 3, 2, 1, 5, 1],
+    'Region': ['North', 'South', 'North', 'West', 'South', 'North']
+}
+df = pd.DataFrame(data)
+df.to_csv('sales_data.csv', index=False) # CSV save ho jayegi
+
+# --- 2. Load & Check (Hint 1) ---
+print("Head:\n", df.head())
+print("\nShape:", df.shape) # Interview Q9
+print("\nInfo:")
+print(df.info())
+print("\nNaN check (Interview Q10):\n", df.isnull().sum())
+
+# --- 3. Analysis (Hint 2: groupby, sum, plot) ---
+# Total sales by product
+product_sales = df.groupby('Product')['Sales'].sum()
+print("\nTotal Sales by Product:\n", product_sales)
+
+# Total sales by category
+category_sales = df.groupby('Category')['Sales'].sum()
+print("\nTotal Sales by Category:\n", category_sales)
+
+# Filtering example (Interview Q5)
+high_sales = df[df['Sales'] > 10000]
+print("\nHigh Sales (>10000):\n", high_sales)
+
+# loc vs iloc example (Interview Q6)
+print("\nloc example:", df.loc[0, 'Product'])
+print("iloc example:", df.iloc[0, 1])
+
+# --- 4. Charts (Deliverables ke liye) ---
+plt.figure()
+product_sales.plot(kind='bar', color='skyblue')
+plt.title('Total Sales by Product')
+plt.ylabel('Sales')
+plt.xticks(rotation=0)
+plt.savefig('product_sales.png') # Screenshot save
+plt.show()
+
+plt.figure()
+category_sales.plot(kind='bar', color='green')
+plt.title('Sales by Category')
+plt.savefig('category_sales.png')
+plt.show()
